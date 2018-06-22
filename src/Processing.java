@@ -34,4 +34,11 @@ public class Processing {
    */
     public static void group_sequencing(ArrayList<Group> groups) {
     }
+    /*
+  path sequencing : 그룹 내의 우선 순위를 정한다.
+   */
+    public static String path_sequencing(Group groups, String starttime) {
+        String endtime = "";
+        return endtime;
+    }
 }

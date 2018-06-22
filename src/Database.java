@@ -20,4 +20,9 @@ public class Database {
     */
     public static void cutoutlist_store(String courier,int[] aid){
     }
+    /*
+    adapt : 모든 사항을 DB에 적용
+   */
+    public static void adapt(String courier,ArrayList<Group> groups){
+    }
 }
