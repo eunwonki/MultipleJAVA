@@ -22,6 +22,12 @@ public class Processing {
 
     }
     /*
+  change_address : 구주소를 신주소로 바꿈
+   */
+    public static void change_address(ArrayList<Destination> list) {
+
+    }
+    /*
    grouping : 주소지 리스트를 특정 기준을 통해 그룹으로 묶는다.
     */
     public static ArrayList<Group> grouping(ArrayList<Destination> list) {

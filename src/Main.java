@@ -4,6 +4,10 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
+        Test();
+    }
+
+    public static void Test() {
     }
 
     public void find_path(String courier) {
@@ -17,6 +21,8 @@ public class Main {
         list = Database.takeout_all_destination(courier);
         //유효하지 않은 주소 걸러서(좌표 구해주는 연산 포함) 삭제 후 DB에 가장 높은 우선순위값 부여
         Processing.cutout_list_by_validate(list,courier);
+        //구주소를 신주소로 교환
+        Processing.change_address(list);
         //같은 주소를 하나의 주소로 통합하는 과정
         Processing.cutout_list_by_address(list);
 
