@@ -119,7 +119,7 @@ public class Processing {
                 new_address += " " + doro;
                 if(!build_main.equals("0")) new_address += " " + build_main;
                 if(!build_sub.equals("0")) new_address += " " + build_sub;
-                if(extra.equals("")) new_address += " " + extra;
+                if(!extra.equals("")) new_address += " " + extra;
                 System.out.println("도로명주소 : "+new_address);
             }
             catch (SQLException e){
