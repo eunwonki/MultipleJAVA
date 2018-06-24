@@ -3,11 +3,14 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
         Test();
     }
 
     public static void Test() {
+        ArrayList<Destination> list;
+        String courier = "";
+        list = Database.takeout_all_destination(courier);
+        Processing.change_address(list);
     }
 
     public void find_path(String courier) {

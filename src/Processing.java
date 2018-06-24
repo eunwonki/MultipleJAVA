@@ -2,6 +2,8 @@
 Database : 주소지를 처리하는 비즈니스 로직을 정의(제어클래스)
  */
 import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.sql.*;
 
 public class Processing {
     /*
@@ -24,8 +26,107 @@ public class Processing {
     /*
   change_address : 구주소를 신주소로 바꿈
    */
-    public static void change_address(ArrayList<Destination> list) {
+    public static void change_address(ArrayList<Destination> list){
 
+        Database db = new Database();
+        db.connectDB();
+
+        String address = "서울특별시 동작구 상도동 506-5 우천빌라 302호";
+       // String address = "경기도 안성시 일죽면 송천리 반석아파트 104동 1005호";
+        //String address = "경기도 안성시 서동대로 7416-10";
+        StringTokenizer st = new StringTokenizer(address," ");
+
+        String si = new String("");    //시,도
+        String gu = new String("");    //시,군,구
+        String dong = new String("");  //읍,면,동
+        String ri = new String("");
+        String ji = new String("");
+        String ji_main = new String(""); //지번 번지
+        String ji_sub = new String(""); //지번 호
+        String extra = new String("");
+        int opt = 0;  //1일떄 도로명주소  //2일때  지번주소 변화가 필요
+
+        while(opt == 0)
+        {
+            String str = new String(st.nextToken());
+            switch(str.charAt(str.length()-1))
+            {
+                case '길' : case '로':
+                    opt = 1;
+                    break;
+                case '도':
+                    si = str;
+                    break;
+                case '시':
+                    if(str.length()<3) gu = str;
+                    else if((str.charAt(str.length()-3) == '특' && str.charAt(str.length()-2) == '별') ||
+                            (str.charAt(str.length()-3) == '광' && str.charAt(str.length()-2) == '역'))
+                        si = str;
+                    else gu = str;
+                    break;
+                case '군': case '구':
+                    gu = str;
+                    break;
+                case '읍': case '면': case '동':
+                    dong = str;
+                    break;
+                case '리':
+                    ri = str;
+                    break;
+                default:
+                    if('0' <= str.charAt(str.length()-1) && str.charAt(str.length()-1) <= '9')
+                    {
+                        ji = str;
+                        StringTokenizer st2 = new StringTokenizer(ji, "-");
+                        ji_main = new String(st2.nextToken());
+                        ji_sub = new String(st2.nextToken());
+                    }
+                    else extra = str;
+
+                    if(st.hasMoreTokens()) {
+                        extra = extra.concat(new String(st.nextToken("")));
+                    }
+                    opt = 2;
+                    break;
+            }
+        }
+        if(opt != 1)
+        {
+            String doro = "";
+            String build_main = "";
+            String build_sub = "";
+
+            String sql = "select name_doro, build_main, build_sub from seoul_build where";
+            sql += " name_sigun='" + gu+"'";  //시군구는 필수요소
+            if(!si.equals("")) sql += " and name_sido='" + si+"'";
+            if(!dong.equals("")) sql += " and name_eup='" + dong+"'";
+            if(!ri.equals("")) sql += " and name_ri='" +ri+"'";
+            if(!ji_main.equals("")) sql+= " and ji_main='" +ji_main+"'";
+            if(!ji_sub.equals("")) sql+= " and ji_sub='" +ji_sub+"'";
+            //System.out.println(sql);
+            try {
+                ResultSet rs = db.stmt.executeQuery(sql);
+                rs.next();
+                doro = rs.getString("name_doro");
+                build_main = rs.getString("build_main");
+                build_sub = rs.getString("build_sub");
+
+                System.out.println("지번주소 : "+address);
+                String new_address = new String("");
+                if(!si.equals("")) new_address += si;
+                new_address += " " + gu;
+                if(!dong.equals("")) new_address += " "+dong;
+                new_address += " " + doro;
+                if(!build_main.equals("0")) new_address += " " + build_main;
+                if(!build_sub.equals("0")) new_address += " " + build_sub;
+                if(extra.equals("")) new_address += " " + extra;
+                System.out.println("도로명주소 : "+new_address);
+            }
+            catch (SQLException e){
+                System.out.println("쿼리문이 실행되지 않음");
+            }
+        }
+        db.closeDB();
     }
     /*
    grouping : 주소지 리스트를 특정 기준을 통해 그룹으로 묶는다.
