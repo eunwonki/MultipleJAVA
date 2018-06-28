@@ -3,10 +3,28 @@ Database : 주소지를 처리하는 비즈니스 로직을 정의(제어클래�
  */
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.StringTokenizer;
 import java.sql.*;
 
 public class Processing {
+
+    public static void calculate_distance(ArrayList<Destination> list,String xpos_s,String ypos_s) {
+        System.out.println("정렬중입니다.");
+
+        double xpos = Double.valueOf(xpos_s);
+        double ypos = Double.valueOf(ypos_s);
+
+        for(int i=0;i<list.size();i++)
+        {
+            double cur_x = Double.valueOf(list.get(i).xpos);
+            double cur_y = Double.valueOf(list.get(i).ypos);
+            double dist =  Math.sqrt(Math.pow(cur_x - xpos, 2) + Math.pow(cur_y - ypos, 2));
+            list.get(i).dist = dist;
+        }
+
+        Collections.sort(list);
+    }
 
     /*
     cutout_list_by_validate : 주소지 리스트의 위도 경도를 구해주고 구할 수 없는 주소들은
@@ -62,6 +80,7 @@ public class Processing {
                     list.get(j).xpos = rs.getString("xPoint");list.get(j).ypos = rs.getString("yPoint");
                 }
                 else {
+                    System.out.println(j);
                     list.remove(j);j--;
                 }
             } catch (Exception e) {
@@ -197,7 +216,7 @@ public class Processing {
                         if (!dong.equals("")) new_address += " " + dong;
                         new_address += " " + list.get(i).doro_name;
                         if(!list.get(i).build_main.equals("0")) new_address += " " + list.get(i).build_main;
-                        if(!list.get(i).build_sub.equals("0")) new_address += " " + list.get(i).build_sub;
+                        if(!list.get(i).build_sub.equals("0")) new_address += "-" + list.get(i).build_sub;
                         if (!extra.equals("")) new_address += " " + extra;
                         list.get(i).address = new String(new_address);
                     }

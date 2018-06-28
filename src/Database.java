@@ -87,7 +87,7 @@ public class Database {
             PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setString(1, doroname);
             pstmt.setString(2, building_mainnum);
-//            System.out.println("sql1 = " + pstmt.toString());
+            //System.out.println("sql1 = " + pstmt.toString());
             pstmt.executeQuery();
             return pstmt.executeQuery();
         }catch (Exception e) {

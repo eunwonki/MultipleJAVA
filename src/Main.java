@@ -18,6 +18,10 @@ public class Main {
         String starttime = ""; //현재시간
         int i;
 
+        //인천시 계양구 계양대로 114 : 931337.903415, 1948567.644438
+        String xpos = new String("931337.903415");
+        String ypos = new String("1948567.644438");
+
         //DB에서 모든 주소지 가져오기
         list = Database.takeout_all_destination(courier);
         for(i=0;i<list.size();i++) System.out.println(i+" : "+list.get(i).address);
@@ -28,7 +32,17 @@ public class Main {
         //좌표를 구할 수 없는 주소는 유효하지 않은 주소
         Processing.cutout_list_by_validate(list,courier);
         for(i=0;i<list.size();i++) System.out.println(i+" : "+list.get(i).address + " : "+list.get(i).xpos+", "+list.get(i).ypos);
-        System.exit(1);
+
+
+        //비정규과정
+        //출발지로부터 거리를 계산
+        Processing.calculate_distance(list,xpos,ypos);
+        for(i=0;i<list.size();i++) System.out.println(i+" : "+list.get(i).address + " : "+list.get(i).dist);
+        //출발지로부터 가장 가까운 순서로 정렬
+
+
+
+        //정규과정
         //같은 주소를 하나의 주소로 통합하는 과정 (같은 주소는 좌표가 같은 주소)
         Processing.cutout_list_by_address(list);
 
