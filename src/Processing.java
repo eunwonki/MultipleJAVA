@@ -10,7 +10,7 @@ import java.sql.*;
 public class Processing {
 
     public static void calculate_distance(ArrayList<Destination> list,String xpos_s,String ypos_s) {
-        System.out.println("정렬중입니다.");
+        System.out.println("정렬중입니다.64");
 
         double xpos = Double.valueOf(xpos_s);
         double ypos = Double.valueOf(ypos_s);

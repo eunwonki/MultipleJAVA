@@ -6,7 +6,7 @@ public class Destination implements Comparable<Destination>{
     public String xpos; //x좌표
     public String ypos; //y좌표
     public double dist; //출발지로부터의 거리
-    public String[] aid = new String[10];  //같은 주소를 가진 aid 목록
+    public int[] aid = new int[10];  //같은 주소를 가진 aid 목록
     public int num = 0;   //aid의 개수
     public String starttime;  //시작시간
     public String endtime;    //도착시간

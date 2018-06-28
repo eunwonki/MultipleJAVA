@@ -46,13 +46,12 @@ public class Database {
         db.connectDB("multiple");
 
         try {
-           // String sql = "select aid, address from soongsil_" + courier;
-            String sql = "select aid, address from soongsil_delivery";
+            String sql = "select aid, address from soongsil_" + courier;
 
             ResultSet rs = db.stmt.executeQuery(sql);
             while(rs.next()) {
                 String address = rs.getString("address");
-                String aid = rs.getString("aid");
+                int aid = rs.getInt("aid");
 
                 Destination new_dest = new Destination();
                 new_dest.aid[new_dest.num] = aid;
@@ -79,6 +78,26 @@ public class Database {
     adapt : 모든 사항을 DB에 적용
    */
     public static void adapt(String courier,ArrayList<Group> groups){
+    }
+
+    public static void adapt_tmp(String courier,ArrayList<Destination> list)
+    {
+        Database db = new Database();
+        db.connectDB("multiple");
+        for(int i=0;i<list.size();i++)
+        {
+            String sql = "UPDATE soongsil_" + courier + " set priority=? where aid=?";
+            try {
+                PreparedStatement pstmt = db.con.prepareStatement(sql);
+                pstmt.setInt(1, i+1);
+                pstmt.setInt(2, list.get(i).aid[0]);
+                //System.out.println("sql = " + pstmt.toString());
+                pstmt.executeUpdate();
+             }catch (Exception e) {
+            System.out.println(e);
+            }
+        }
+        db.closeDB();
     }
 
     public ResultSet searchPointByAddress(String city, String doroname, String building_mainnum) {

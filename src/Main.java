@@ -3,12 +3,11 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        /*if(args.length == 0) {
-            System.out.println("usage : %s <courier id>");
+        if(args.length == 0) {
+            System.out.println("usage : a.out <courier id>");
             System.exit(1);
         }
-        find_path(args[1]);*/
-        find_path("wonjun");
+        find_path(args[0]);
     }
 
     public static void find_path(String courier) {
@@ -35,10 +34,11 @@ public class Main {
 
 
         //비정규과정
-        //출발지로부터 거리를 계산
+        //출발지로부터 거리를 계산 후 정렬
         Processing.calculate_distance(list,xpos,ypos);
         for(i=0;i<list.size();i++) System.out.println(i+" : "+list.get(i).address + " : "+list.get(i).dist);
-        //출발지로부터 가장 가까운 순서로 정렬
+        //DB에 적용
+        Database.adapt_tmp(courier,list);
 
 
 
